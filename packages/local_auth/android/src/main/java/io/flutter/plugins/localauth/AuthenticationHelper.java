@@ -1,4 +1,4 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
+// Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 package io.flutter.plugins.localauth;
@@ -138,6 +138,7 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
           return;
         }
         completionHandler.onError("NotAvailable", "Security credentials not available.");
+        break;
       case BiometricPrompt.ERROR_NO_SPACE:
       case BiometricPrompt.ERROR_NO_BIOMETRICS:
         if (promptInfo.isDeviceCredentialAllowed()) return;
