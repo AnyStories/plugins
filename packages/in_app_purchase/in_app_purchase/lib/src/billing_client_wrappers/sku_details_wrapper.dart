@@ -29,21 +29,21 @@ class SkuDetailsWrapper {
   /// Creates a [SkuDetailsWrapper] with the given purchase details.
   @visibleForTesting
   SkuDetailsWrapper({
-    required this.description,
-    required this.freeTrialPeriod,
-    required this.introductoryPrice,
-    required this.introductoryPriceMicros,
-    required this.introductoryPriceCycles,
-    required this.introductoryPricePeriod,
-    required this.price,
-    required this.priceAmountMicros,
-    required this.priceCurrencyCode,
-    required this.sku,
-    required this.subscriptionPeriod,
-    required this.title,
-    required this.type,
-    required this.originalPrice,
-    required this.originalPriceAmountMicros,
+    this.description,
+    this.freeTrialPeriod,
+    this.introductoryPrice,
+    this.introductoryPriceMicros,
+    this.introductoryPriceCycles,
+    this.introductoryPricePeriod,
+    this.price,
+    this.priceAmountMicros,
+    this.priceCurrencyCode,
+    this.sku,
+    this.subscriptionPeriod,
+    this.title,
+    this.type,
+    this.originalPrice,
+    this.originalPriceAmountMicros,
   });
 
   /// Constructs an instance of this from a key value map of data.
@@ -165,8 +165,7 @@ class SkuDetailsWrapper {
 class SkuDetailsResponseWrapper {
   /// Creates a [SkuDetailsResponseWrapper] with the given purchase details.
   @visibleForTesting
-  SkuDetailsResponseWrapper(
-      {required this.billingResult, required this.skuDetailsList});
+  SkuDetailsResponseWrapper({this.billingResult, this.skuDetailsList});
 
   /// Constructs an instance of this from a key value map of data.
   ///
@@ -203,13 +202,13 @@ class SkuDetailsResponseWrapper {
 @BillingResponseConverter()
 class BillingResultWrapper {
   /// Constructs the object with [responseCode] and [debugMessage].
-  BillingResultWrapper({required this.responseCode, this.debugMessage});
+  BillingResultWrapper({this.responseCode, this.debugMessage});
 
   /// Constructs an instance of this from a key value map of data.
   ///
   /// The map needs to have named string keys with values matching the names and
   /// types of all of the members on this class.
-  factory BillingResultWrapper.fromJson(Map<String, dynamic>? map) {
+  factory BillingResultWrapper.fromJson(Map<String, dynamic> map) {
     if (map == null || map.isEmpty) {
       return BillingResultWrapper(
           responseCode: BillingResponse.error,
@@ -225,7 +224,7 @@ class BillingResultWrapper {
   ///
   /// Defaults to `null`.
   /// This message uses an en-US locale and should not be shown to users.
-  final String? debugMessage;
+  final String debugMessage;
 
   @override
   bool operator ==(dynamic other) {

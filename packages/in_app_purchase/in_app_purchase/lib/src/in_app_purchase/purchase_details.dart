@@ -58,9 +58,7 @@ class PurchaseVerificationData {
 
   /// Creates a [PurchaseVerificationData] object with the provided information.
   PurchaseVerificationData(
-      {required this.localVerificationData,
-      required this.serverVerificationData,
-      required this.source});
+      {this.localVerificationData, this.serverVerificationData, this.source});
 }
 
 /// Status for a [PurchaseDetails].
@@ -87,7 +85,7 @@ enum PurchaseStatus {
 class PurchaseParam {
   /// Creates a new purchase parameter object with the given data.
   PurchaseParam(
-      {required this.productDetails,
+      {this.productDetails,
       this.applicationUserName,
       this.sandboxTesting = false,
       this.simulatesAskToBuyInSandbox = false,
@@ -104,7 +102,7 @@ class PurchaseParam {
   /// Do not pass in a clear text, your developer ID, the user’s Apple ID, or the
   /// user's Google ID for this field.
   /// For example, you can use a one-way hash of the user’s account name on your server.
-  final String? applicationUserName;
+  final String applicationUserName;
 
   /// @deprecated Use [simulatesAskToBuyInSandbox] instead.
   ///
@@ -125,7 +123,7 @@ class PurchaseParam {
   /// This does not require on iOS since Apple provides a way to group related subscriptions
   /// together in iTunesConnect. So when a subscription upgrade or downgrade is requested,
   /// Apple finds the old subscription details from the group and handle it automatically.
-  final ChangeSubscriptionParam? changeSubscriptionParam;
+  final ChangeSubscriptionParam changeSubscriptionParam;
 }
 
 /// This parameter object which is only applicable on Android for upgrading or downgrading an existing subscription.
@@ -138,8 +136,7 @@ class PurchaseParam {
 /// Please refer to the 'Creating a Subscription Group' sections of [Apple's subscription guide](https://developer.apple.com/app-store/subscriptions/)
 class ChangeSubscriptionParam {
   /// Creates a new change subscription param object with given data
-  ChangeSubscriptionParam(
-      {required this.oldPurchaseDetails, this.prorationMode});
+  ChangeSubscriptionParam({this.oldPurchaseDetails, this.prorationMode});
 
   /// The purchase object of the existing subscription that the user needs to
   /// upgrade/downgrade from.
@@ -149,7 +146,7 @@ class ChangeSubscriptionParam {
   ///
   /// This is an optional parameter that indicates how to handle the existing
   /// subscription when the new subscription comes into effect.
-  final ProrationMode? prorationMode;
+  final ProrationMode prorationMode;
 }
 
 /// Represents the transaction details of a purchase.
@@ -160,7 +157,7 @@ class PurchaseDetails {
   /// A unique identifier of the purchase.
   ///
   /// The `value` is null on iOS if it is not a successful purchase.
-  final String? purchaseID;
+  final String purchaseID;
 
   /// The product identifier of the purchase.
   final String productID;
@@ -180,7 +177,7 @@ class PurchaseDetails {
   /// Milliseconds since epoch.
   ///
   /// The value is `null` if [status] is not [PurchaseStatus.purchased].
-  final String? transactionDate;
+  final String transactionDate;
 
   /// The status that this [PurchaseDetails] is currently on.
   PurchaseStatus get status => _status;
@@ -199,22 +196,22 @@ class PurchaseDetails {
     _status = status;
   }
 
-  late PurchaseStatus _status;
+  PurchaseStatus _status;
 
   /// The error details when the [status] is [PurchaseStatus.error].
   ///
   /// The value is `null` if [status] is not [PurchaseStatus.error].
-  IAPError? error;
+  IAPError error;
 
   /// Points back to the `StoreKits`'s [SKPaymentTransactionWrapper] object that generated this [PurchaseDetails] object.
   ///
   /// This is `null` on Android.
-  final SKPaymentTransactionWrapper? skPaymentTransaction;
+  final SKPaymentTransactionWrapper skPaymentTransaction;
 
   /// Points back to the `BillingClient`'s [PurchaseWrapper] object that generated this [PurchaseDetails] object.
   ///
   /// This is `null` on iOS.
-  final PurchaseWrapper? billingClientPurchase;
+  final PurchaseWrapper billingClientPurchase;
 
   /// The developer has to call [InAppPurchaseConnection.completePurchase] if the value is `true`
   /// and the product has been delivered to the user.
@@ -227,14 +224,14 @@ class PurchaseDetails {
   // The platform that the object is created on.
   //
   // The value is either '_kPlatformIOS' or '_kPlatformAndroid'.
-  String? _platform;
+  String _platform;
 
   /// Creates a new PurchaseDetails object with the provided data.
   PurchaseDetails({
     this.purchaseID,
-    required this.productID,
-    required this.verificationData,
-    required this.transactionDate,
+    this.productID,
+    this.verificationData,
+    this.transactionDate,
     this.skPaymentTransaction,
     this.billingClientPurchase,
   });
@@ -249,7 +246,7 @@ class PurchaseDetails {
             serverVerificationData: base64EncodedReceipt,
             source: IAPSource.AppStore),
         this.transactionDate = transaction.transactionTimeStamp != null
-            ? (transaction.transactionTimeStamp! * 1000).toInt().toString()
+            ? (transaction.transactionTimeStamp * 1000).toInt().toString()
             : null,
         this.skPaymentTransaction = transaction,
         this.billingClientPurchase = null,
@@ -294,7 +291,7 @@ class PurchaseDetails {
 /// An instance of this class is returned in [InAppPurchaseConnection.queryPastPurchases].
 class QueryPurchaseDetailsResponse {
   /// Creates a new [QueryPurchaseDetailsResponse] object with the provider information.
-  QueryPurchaseDetailsResponse({required this.pastPurchases, this.error});
+  QueryPurchaseDetailsResponse({this.pastPurchases, this.error});
 
   /// A list of successfully fetched past purchases.
   ///
@@ -306,5 +303,5 @@ class QueryPurchaseDetailsResponse {
   /// The error when fetching past purchases.
   ///
   /// If the fetch is successful, the value is `null`.
-  final IAPError? error;
+  final IAPError error;
 }

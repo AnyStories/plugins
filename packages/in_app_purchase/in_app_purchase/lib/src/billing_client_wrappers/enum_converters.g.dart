@@ -8,12 +8,13 @@ part of 'enum_converters.dart';
 
 _SerializedEnums _$_SerializedEnumsFromJson(Map json) {
   return _SerializedEnums()
-    ..response = _$enumDecode(_$BillingResponseEnumMap, json['response'])
-    ..type = _$enumDecode(_$SkuTypeEnumMap, json['type'])
-    ..purchaseState =
-        _$enumDecode(_$PurchaseStateWrapperEnumMap, json['purchaseState'])
+    ..response =
+        _$enumDecodeNullable(_$BillingResponseEnumMap, json['response'])
+    ..type = _$enumDecodeNullable(_$SkuTypeEnumMap, json['type'])
+    ..purchaseState = _$enumDecodeNullable(
+        _$PurchaseStateWrapperEnumMap, json['purchaseState'])
     ..prorationMode =
-        _$enumDecode(_$ProrationModeEnumMap, json['prorationMode']);
+        _$enumDecodeNullable(_$ProrationModeEnumMap, json['prorationMode']);
 }
 
 Map<String, dynamic> _$_SerializedEnumsToJson(_SerializedEnums instance) =>
@@ -24,30 +25,36 @@ Map<String, dynamic> _$_SerializedEnumsToJson(_SerializedEnums instance) =>
       'prorationMode': _$ProrationModeEnumMap[instance.prorationMode],
     };
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
   }
 
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$BillingResponseEnumMap = {

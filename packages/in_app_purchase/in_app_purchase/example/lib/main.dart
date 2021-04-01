@@ -36,7 +36,7 @@ class _MyApp extends StatefulWidget {
 
 class _MyAppState extends State<_MyApp> {
   final InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
-  late StreamSubscription<List<PurchaseDetails>> _subscription;
+  StreamSubscription<List<PurchaseDetails>> _subscription;
   List<String> _notFoundIds = [];
   List<ProductDetails> _products = [];
   List<PurchaseDetails> _purchases = [];
@@ -44,7 +44,7 @@ class _MyAppState extends State<_MyApp> {
   bool _isAvailable = false;
   bool _purchasePending = false;
   bool _loading = true;
-  String? _queryProductError;
+  String _queryProductError;
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class _MyAppState extends State<_MyApp> {
         await _connection.queryProductDetails(_kProductIds.toSet());
     if (productDetailResponse.error != null) {
       setState(() {
-        _queryProductError = productDetailResponse.error!.message;
+        _queryProductError = productDetailResponse.error.message;
         _isAvailable = isAvailable;
         _products = productDetailResponse.productDetails;
         _purchases = [];
@@ -150,7 +150,7 @@ class _MyAppState extends State<_MyApp> {
       );
     } else {
       stack.add(Center(
-        child: Text(_queryProductError!),
+        child: Text(_queryProductError),
       ));
     }
     if (_purchasePending) {
@@ -239,7 +239,7 @@ class _MyAppState extends State<_MyApp> {
     }));
     productList.addAll(_products.map(
       (ProductDetails productDetails) {
-        PurchaseDetails? previousPurchase = purchases[productDetails.id];
+        PurchaseDetails previousPurchase = purchases[productDetails.id];
         return ListTile(
             title: Text(
               productDetails.title,
@@ -345,7 +345,7 @@ class _MyAppState extends State<_MyApp> {
   void deliverProduct(PurchaseDetails purchaseDetails) async {
     // IMPORTANT!! Always verify purchase details before delivering the product.
     if (purchaseDetails.productID == _kConsumableId) {
-      await ConsumableStore.save(purchaseDetails.purchaseID!);
+      await ConsumableStore.save(purchaseDetails.purchaseID);
       List<String> consumables = await ConsumableStore.load();
       setState(() {
         _purchasePending = false;
@@ -381,7 +381,7 @@ class _MyAppState extends State<_MyApp> {
         showPendingUI();
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
-          handleError(purchaseDetails.error!);
+          handleError(purchaseDetails.error);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           bool valid = await _verifyPurchase(purchaseDetails);
           if (valid) {
@@ -405,16 +405,16 @@ class _MyAppState extends State<_MyApp> {
     });
   }
 
-  PurchaseDetails? _getOldSubscription(
+  PurchaseDetails _getOldSubscription(
       ProductDetails productDetails, Map<String, PurchaseDetails> purchases) {
     // This is just to demonstrate a subscription upgrade or downgrade.
     // This method assumes that you have only 2 subscriptions under a group, 'subscription_silver' & 'subscription_gold'.
     // The 'subscription_silver' subscription can be upgraded to 'subscription_gold' and
     // the 'subscription_gold' subscription can be downgraded to 'subscription_silver'.
     // Please remember to replace the logic of finding the old subscription Id as per your app.
-    // The old subscription is only required on Android since Apple handles this internally
+    // The old subscription is only on Android since Apple handles this internally
     // by using the subscription group feature in iTunesConnect.
-    PurchaseDetails? oldSubscription;
+    PurchaseDetails oldSubscription;
     if (productDetails.id == _kSilverSubscriptionId &&
         purchases[_kGoldSubscriptionId] != null) {
       oldSubscription = purchases[_kGoldSubscriptionId];

@@ -155,7 +155,7 @@ class FakeIOSPlatform {
 
   // refresh receipt request
   int refreshReceipt = 0;
-  late Map<String, dynamic> refreshReceiptParam;
+  Map<String, dynamic> refreshReceiptParam;
 
   // payment queue
   List<SKPaymentWrapper> payments = [];
@@ -214,18 +214,16 @@ class FakeIOSPlatform {
 }
 
 class TestPaymentTransactionObserver extends SKTransactionObserverWrapper {
-  void updatedTransactions(
-      {required List<SKPaymentTransactionWrapper> transactions}) {}
+  void updatedTransactions({List<SKPaymentTransactionWrapper> transactions}) {}
 
-  void removedTransactions(
-      {required List<SKPaymentTransactionWrapper> transactions}) {}
+  void removedTransactions({List<SKPaymentTransactionWrapper> transactions}) {}
 
-  void restoreCompletedTransactionsFailed({required SKError error}) {}
+  void restoreCompletedTransactionsFailed({SKError error}) {}
 
   void paymentQueueRestoreCompletedTransactionsFinished() {}
 
   bool shouldAddStorePayment(
-      {required SKPaymentWrapper payment, required SKProductWrapper product}) {
+      {SKPaymentWrapper payment, SKProductWrapper product}) {
     return true;
   }
 }

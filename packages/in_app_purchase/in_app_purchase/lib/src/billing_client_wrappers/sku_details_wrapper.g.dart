@@ -8,21 +8,21 @@ part of 'sku_details_wrapper.dart';
 
 SkuDetailsWrapper _$SkuDetailsWrapperFromJson(Map json) {
   return SkuDetailsWrapper(
-    description: json['description'] as String? ?? '',
-    freeTrialPeriod: json['freeTrialPeriod'] as String? ?? '',
-    introductoryPrice: json['introductoryPrice'] as String? ?? '',
-    introductoryPriceMicros: json['introductoryPriceMicros'] as String? ?? '',
-    introductoryPriceCycles: json['introductoryPriceCycles'] as int? ?? 0,
-    introductoryPricePeriod: json['introductoryPricePeriod'] as String? ?? '',
-    price: json['price'] as String? ?? '',
-    priceAmountMicros: json['priceAmountMicros'] as int? ?? 0,
-    priceCurrencyCode: json['priceCurrencyCode'] as String? ?? '',
-    sku: json['sku'] as String? ?? '',
-    subscriptionPeriod: json['subscriptionPeriod'] as String? ?? '',
-    title: json['title'] as String? ?? '',
-    type: const SkuTypeConverter().fromJson(json['type'] as String?),
-    originalPrice: json['originalPrice'] as String? ?? '',
-    originalPriceAmountMicros: json['originalPriceAmountMicros'] as int? ?? 0,
+    description: json['description'] as String ?? '',
+    freeTrialPeriod: json['freeTrialPeriod'] as String ?? '',
+    introductoryPrice: json['introductoryPrice'] as String ?? '',
+    introductoryPriceMicros: json['introductoryPriceMicros'] as String ?? '',
+    introductoryPriceCycles: json['introductoryPriceCycles'] as int ?? 0,
+    introductoryPricePeriod: json['introductoryPricePeriod'] as String ?? '',
+    price: json['price'] as String ?? '',
+    priceAmountMicros: json['priceAmountMicros'] as int ?? 0,
+    priceCurrencyCode: json['priceCurrencyCode'] as String ?? '',
+    sku: json['sku'] as String ?? '',
+    subscriptionPeriod: json['subscriptionPeriod'] as String ?? '',
+    title: json['title'] as String ?? '',
+    type: const SkuTypeConverter().fromJson(json['type'] as String),
+    originalPrice: json['originalPrice'] as String ?? '',
+    originalPriceAmountMicros: json['originalPriceAmountMicros'] as int ?? 0,
   );
 }
 
@@ -47,14 +47,18 @@ Map<String, dynamic> _$SkuDetailsWrapperToJson(SkuDetailsWrapper instance) =>
 
 SkuDetailsResponseWrapper _$SkuDetailsResponseWrapperFromJson(Map json) {
   return SkuDetailsResponseWrapper(
-    billingResult:
-        BillingResultWrapper.fromJson((json['billingResult'] as Map?)?.map(
-      (k, e) => MapEntry(k as String, e),
-    )),
-    skuDetailsList: (json['skuDetailsList'] as List<dynamic>?)
-            ?.map((e) =>
-                SkuDetailsWrapper.fromJson(Map<String, dynamic>.from(e as Map)))
-            .toList() ??
+    billingResult: json['billingResult'] == null
+        ? null
+        : BillingResultWrapper.fromJson((json['billingResult'] as Map)?.map(
+            (k, e) => MapEntry(k as String, e),
+          )),
+    skuDetailsList: (json['skuDetailsList'] as List)
+            ?.map((e) => e == null
+                ? null
+                : SkuDetailsWrapper.fromJson((e as Map)?.map(
+                    (k, e) => MapEntry(k as String, e),
+                  )))
+            ?.toList() ??
         [],
   );
 }
@@ -69,8 +73,8 @@ Map<String, dynamic> _$SkuDetailsResponseWrapperToJson(
 BillingResultWrapper _$BillingResultWrapperFromJson(Map json) {
   return BillingResultWrapper(
     responseCode:
-        const BillingResponseConverter().fromJson(json['responseCode'] as int?),
-    debugMessage: json['debugMessage'] as String?,
+        const BillingResponseConverter().fromJson(json['responseCode'] as int),
+    debugMessage: json['debugMessage'] as String,
   );
 }
 

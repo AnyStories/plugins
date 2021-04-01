@@ -72,7 +72,7 @@ class BillingClient {
   /// [`BillingClient#isReady()`](https://developer.android.com/reference/com/android/billingclient/api/BillingClient.html#isReady())
   /// to get the ready status of the BillingClient instance.
   Future<bool> isReady() async {
-    final bool? ready =
+    final bool ready =
         await channel.invokeMethod<bool>('BillingClient#isReady()');
     return ready ?? false;
   }
@@ -100,7 +100,7 @@ class BillingClient {
   /// This triggers the creation of a new `BillingClient` instance in Java if
   /// one doesn't already exist.
   Future<BillingResultWrapper> startConnection(
-      {required OnBillingServiceDisconnected
+      {OnBillingServiceDisconnected
           onBillingServiceDisconnected}) async {
     assert(_enablePendingPurchases,
         'enablePendingPurchases() must be called before calling startConnection');
@@ -138,7 +138,7 @@ class BillingClient {
   /// `SkuDetailsParams` as direct arguments instead of requiring it constructed
   /// and passed in as a class.
   Future<SkuDetailsResponseWrapper> querySkuDetails(
-      {required SkuType skuType, required List<String> skusList}) async {
+      {SkuType skuType, List<String> skusList}) async {
     final Map<String, dynamic> arguments = <String, dynamic>{
       'skuType': SkuTypeConverter().toJson(skuType),
       'skusList': skusList
@@ -186,12 +186,12 @@ class BillingClient {
   /// The [prorationMode](https://developer.android.com/reference/com/android/billingclient/api/BillingFlowParams.Builder#setreplaceskusprorationmode) is the mode of proration during subscription upgrade/downgrade.
   /// This value will only be effective if the `oldSku` is also set.
   Future<BillingResultWrapper> launchBillingFlow(
-      {required String sku,
-      String? accountId,
-      String? obfuscatedProfileId,
-      String? oldSku,
-      String? purchaseToken,
-      ProrationMode? prorationMode}) async {
+      {String sku,
+      String accountId,
+      String obfuscatedProfileId,
+      String oldSku,
+      String purchaseToken,
+      ProrationMode prorationMode}) async {
     assert(sku != null);
     assert((oldSku == null) == (purchaseToken == null),
         'oldSku and purchaseToken must both be set, or both be null.');
@@ -307,15 +307,15 @@ class BillingClient {
     switch (call.method) {
       case kOnPurchasesUpdated:
         // The purchases updated listener is a singleton.
-        assert(_callbacks[kOnPurchasesUpdated]!.length == 1);
+        assert(_callbacks[kOnPurchasesUpdated].length == 1);
         final PurchasesUpdatedListener listener =
-            _callbacks[kOnPurchasesUpdated]!.first as PurchasesUpdatedListener;
+            _callbacks[kOnPurchasesUpdated].first as PurchasesUpdatedListener;
         listener(PurchasesResultWrapper.fromJson(
             call.arguments.cast<String, dynamic>()));
         break;
       case _kOnBillingServiceDisconnected:
         final int handle = call.arguments['handle'];
-        await _callbacks[_kOnBillingServiceDisconnected]![handle]();
+        await _callbacks[_kOnBillingServiceDisconnected][handle]();
         break;
     }
   }

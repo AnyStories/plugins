@@ -8,10 +8,11 @@ part of 'enum_converters.dart';
 
 _SerializedEnums _$_SerializedEnumsFromJson(Map json) {
   return _SerializedEnums()
-    ..response = _$enumDecode(
+    ..response = _$enumDecodeNullable(
         _$SKPaymentTransactionStateWrapperEnumMap, json['response'])
-    ..unit = _$enumDecode(_$SKSubscriptionPeriodUnitEnumMap, json['unit'])
-    ..discountPaymentMode = _$enumDecode(
+    ..unit =
+        _$enumDecodeNullable(_$SKSubscriptionPeriodUnitEnumMap, json['unit'])
+    ..discountPaymentMode = _$enumDecodeNullable(
         _$SKProductDiscountPaymentModeEnumMap, json['discountPaymentMode']);
 }
 
@@ -23,30 +24,36 @@ Map<String, dynamic> _$_SerializedEnumsToJson(_SerializedEnums instance) =>
           _$SKProductDiscountPaymentModeEnumMap[instance.discountPaymentMode],
     };
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
   }
 
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$SKPaymentTransactionStateWrapperEnumMap = {

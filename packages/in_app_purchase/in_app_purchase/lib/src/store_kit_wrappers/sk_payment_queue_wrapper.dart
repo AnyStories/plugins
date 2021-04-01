@@ -24,7 +24,7 @@ part 'sk_payment_queue_wrapper.g.dart';
 /// available at the [In-App Purchase Programming
 /// Guide](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Introduction.html#//apple_ref/doc/uid/TP40008267).
 class SKPaymentQueueWrapper {
-  SKTransactionObserverWrapper? _observer;
+  SKTransactionObserverWrapper _observer;
 
   /// Returns the default payment queue.
   ///
@@ -41,7 +41,7 @@ class SKPaymentQueueWrapper {
   /// Calls [`-[SKPaymentQueue transactions]`](https://developer.apple.com/documentation/storekit/skpaymentqueue/1506026-transactions?language=objc)
   Future<List<SKPaymentTransactionWrapper>> transactions() async {
     return _getTransactionList((await channel
-        .invokeListMethod<dynamic>('-[SKPaymentQueue transactions]'))!);
+        .invokeListMethod<dynamic>('-[SKPaymentQueue transactions]')));
   }
 
   /// Calls [`-[SKPaymentQueue canMakePayments:]`](https://developer.apple.com/documentation/storekit/skpaymentqueue/1506139-canmakepayments?language=objc).
@@ -104,7 +104,7 @@ class SKPaymentQueueWrapper {
   /// finishTransaction:]`](https://developer.apple.com/documentation/storekit/skpaymentqueue/1506003-finishtransaction?language=objc).
   Future<void> finishTransaction(
       SKPaymentTransactionWrapper transaction) async {
-    Map<String, String?> requestMap = transaction.toFinishMap();
+    Map<String, String> requestMap = transaction.toFinishMap();
     await channel.invokeMethod<void>(
       '-[InAppPurchasePlugin finishTransaction:result:]',
       requestMap,
@@ -131,7 +131,7 @@ class SKPaymentQueueWrapper {
   /// restoreCompletedTransactions]`](https://developer.apple.com/documentation/storekit/skpaymentqueue/1506123-restorecompletedtransactions?language=objc)
   /// or [`-[SKPayment restoreCompletedTransactionsWithApplicationUsername:]`](https://developer.apple.com/documentation/storekit/skpaymentqueue/1505992-restorecompletedtransactionswith?language=objc)
   /// depending on whether the `applicationUserName` is set.
-  Future<void> restoreTransactions({String? applicationUserName}) async {
+  Future<void> restoreTransactions({String applicationUserName}) async {
     await channel.invokeMethod<void>(
         '-[InAppPurchasePlugin restoreTransactions:result:]',
         applicationUserName);
@@ -152,7 +152,7 @@ class SKPaymentQueueWrapper {
   Future<void> _handleObserverCallbacks(MethodCall call) async {
     assert(_observer != null,
         '[in_app_purchase]: (Fatal)The observer has not been set but we received a purchase transaction notification. Please ensure the observer has been set using `setTransactionObserver`. Make sure the observer is added right at the App Launch.');
-    final SKTransactionObserverWrapper observer = _observer!;
+    final SKTransactionObserverWrapper observer = _observer;
     switch (call.method) {
       case 'updatedTransactions':
         {
@@ -220,7 +220,7 @@ class SKPaymentQueueWrapper {
 @JsonSerializable()
 class SKError {
   /// Creates a new [SKError] object with the provided information.
-  SKError({required this.code, required this.domain, required this.userInfo});
+  SKError({this.code, this.domain, this.userInfo});
 
   /// Constructs an instance of this from a key-value map of data.
   ///
@@ -278,7 +278,7 @@ class SKError {
 class SKPaymentWrapper {
   /// Creates a new [SKPaymentWrapper] with the provided information.
   SKPaymentWrapper(
-      {required this.productIdentifier,
+      {this.productIdentifier,
       this.applicationUsername,
       this.requestData,
       this.quantity = 1,
@@ -317,7 +317,7 @@ class SKPaymentWrapper {
   /// account name on your server. Don’t use the Apple ID for your developer
   /// account, the user’s Apple ID, or the user’s plaintext account name on
   /// your server.
-  final String? applicationUsername;
+  final String applicationUsername;
 
   /// Reserved for future use.
   ///
@@ -328,7 +328,7 @@ class SKPaymentWrapper {
   // We also provide this property to match the iOS platform. Converted to
   // String from NSData from ios platform using UTF8Encoding. The / default is
   // null.
-  final String? requestData;
+  final String requestData;
 
   /// The amount of the product this payment is for.
   ///

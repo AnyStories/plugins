@@ -17,7 +17,7 @@ void main() {
         () {
       final SKProductSubscriptionPeriodWrapper wrapper =
           SKProductSubscriptionPeriodWrapper.fromJson(
-              buildSubscriptionPeriodMap(dummySubscription)!);
+              buildSubscriptionPeriodMap(dummySubscription));
       expect(wrapper, equals(dummySubscription));
     });
 
@@ -139,7 +139,7 @@ void main() {
       expect(dummyTransaction.transactionIdentifier, details.purchaseID);
       expect(dummyTransaction.payment.productIdentifier, details.productID);
       expect(dummyTransaction.transactionTimeStamp, isNotNull);
-      expect((dummyTransaction.transactionTimeStamp! * 1000).toInt().toString(),
+      expect((dummyTransaction.transactionTimeStamp * 1000).toInt().toString(),
           details.transactionDate);
       expect(details.verificationData.localVerificationData, 'receipt data');
       expect(details.verificationData.serverVerificationData, 'receipt data');
@@ -155,7 +155,7 @@ void main() {
               payment: dummyPayment,
               transactionState: SKPaymentTransactionStateWrapper.failed,
               transactionIdentifier: 'abcd');
-      final Map<String, String?> finishMap = transactionWrapper.toFinishMap();
+      final Map<String, String> finishMap = transactionWrapper.toFinishMap();
       expect(finishMap['transactionIdentifier'], 'abcd');
       expect(finishMap['productIdentifier'], dummyPayment.productIdentifier);
     });
@@ -167,7 +167,7 @@ void main() {
           SKPaymentTransactionWrapper(
               payment: dummyPayment,
               transactionState: SKPaymentTransactionStateWrapper.failed);
-      final Map<String, String?> finishMap = transactionWrapper.toFinishMap();
+      final Map<String, String> finishMap = transactionWrapper.toFinishMap();
       expect(finishMap['transactionIdentifier'], null);
     });
 

@@ -8,9 +8,9 @@ part of 'sk_payment_queue_wrapper.dart';
 
 SKError _$SKErrorFromJson(Map json) {
   return SKError(
-    code: json['code'] as int? ?? 0,
-    domain: json['domain'] as String? ?? '',
-    userInfo: (json['userInfo'] as Map?)?.map(
+    code: json['code'] as int ?? 0,
+    domain: json['domain'] as String ?? '',
+    userInfo: (json['userInfo'] as Map)?.map(
           (k, e) => MapEntry(k as String, e),
         ) ??
         {},
@@ -25,12 +25,12 @@ Map<String, dynamic> _$SKErrorToJson(SKError instance) => <String, dynamic>{
 
 SKPaymentWrapper _$SKPaymentWrapperFromJson(Map json) {
   return SKPaymentWrapper(
-    productIdentifier: json['productIdentifier'] as String? ?? '',
-    applicationUsername: json['applicationUsername'] as String?,
-    requestData: json['requestData'] as String?,
-    quantity: json['quantity'] as int? ?? 0,
+    productIdentifier: json['productIdentifier'] as String ?? '',
+    applicationUsername: json['applicationUsername'] as String,
+    requestData: json['requestData'] as String,
+    quantity: json['quantity'] as int ?? 0,
     simulatesAskToBuyInSandbox:
-        json['simulatesAskToBuyInSandbox'] as bool? ?? false,
+        json['simulatesAskToBuyInSandbox'] as bool ?? false,
   );
 }
 

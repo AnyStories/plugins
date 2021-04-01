@@ -27,17 +27,17 @@ class PurchaseWrapper {
   /// Creates a purchase wrapper with the given purchase details.
   @visibleForTesting
   PurchaseWrapper(
-      {required this.orderId,
-      required this.packageName,
-      required this.purchaseTime,
-      required this.purchaseToken,
-      required this.signature,
-      required this.sku,
-      required this.isAutoRenewing,
-      required this.originalJson,
+      {this.orderId,
+      this.packageName,
+      this.purchaseTime,
+      this.purchaseToken,
+      this.signature,
+      this.sku,
+      this.isAutoRenewing,
+      this.originalJson,
       this.developerPayload,
-      required this.isAcknowledged,
-      required this.purchaseState});
+      this.isAcknowledged,
+      this.purchaseState});
 
   /// Factory for creating a [PurchaseWrapper] from a [Map] with the purchase details.
   factory PurchaseWrapper.fromJson(Map<String, dynamic> map) =>
@@ -122,7 +122,7 @@ class PurchaseWrapper {
   /// The value is `null` if it wasn't specified when the purchase was acknowledged or consumed.
   /// The `developerPayload` is removed from [BillingClientWrapper.acknowledgePurchase], [BillingClientWrapper.consumeAsync], [InAppPurchaseConnection.completePurchase], [InAppPurchaseConnection.consumePurchase]
   /// after plugin version `0.5.0`. As a result, this will be `null` for new purchases that happen after updating to `0.5.0`.
-  final String? developerPayload;
+  final String developerPayload;
 
   /// Whether the purchase has been acknowledged.
   ///
@@ -152,12 +152,12 @@ class PurchaseHistoryRecordWrapper {
   /// Creates a [PurchaseHistoryRecordWrapper] with the given record details.
   @visibleForTesting
   PurchaseHistoryRecordWrapper({
-    required this.purchaseTime,
-    required this.purchaseToken,
-    required this.signature,
-    required this.sku,
-    required this.originalJson,
-    required this.developerPayload,
+    this.purchaseTime,
+    this.purchaseToken,
+    this.signature,
+    this.sku,
+    this.originalJson,
+    this.developerPayload,
   });
 
   /// Factory for creating a [PurchaseHistoryRecordWrapper] from a [Map] with the record details.
@@ -193,7 +193,7 @@ class PurchaseHistoryRecordWrapper {
   /// The payload specified by the developer when the purchase was acknowledged or consumed.
   ///
   /// The value is `null` if it wasn't specified when the purchase was acknowledged or consumed.
-  final String? developerPayload;
+  final String developerPayload;
 
   @override
   bool operator ==(Object other) {
@@ -226,9 +226,7 @@ class PurchaseHistoryRecordWrapper {
 class PurchasesResultWrapper {
   /// Creates a [PurchasesResultWrapper] with the given purchase result details.
   PurchasesResultWrapper(
-      {required this.responseCode,
-      required this.billingResult,
-      required this.purchasesList});
+      {this.responseCode, this.billingResult, this.purchasesList});
 
   /// Factory for creating a [PurchaseResultWrapper] from a [Map] with the result details.
   factory PurchasesResultWrapper.fromJson(Map<String, dynamic> map) =>
@@ -271,8 +269,7 @@ class PurchasesResultWrapper {
 @BillingResponseConverter()
 class PurchasesHistoryResult {
   /// Creates a [PurchasesHistoryResult] with the provided history.
-  PurchasesHistoryResult(
-      {required this.billingResult, required this.purchaseHistoryRecordList});
+  PurchasesHistoryResult({this.billingResult, this.purchaseHistoryRecordList});
 
   /// Factory for creating a [PurchasesHistoryResult] from a [Map] with the history result details.
   factory PurchasesHistoryResult.fromJson(Map<String, dynamic> map) =>

@@ -9,11 +9,11 @@ typedef void AdditionalSteps(dynamic args);
 
 class StubInAppPurchasePlatform {
   Map<String, dynamic> _expectedCalls = <String, dynamic>{};
-  Map<String, AdditionalSteps?> _additionalSteps = <String, AdditionalSteps?>{};
+  Map<String, AdditionalSteps> _additionalSteps = <String, AdditionalSteps>{};
   void addResponse(
-      {required String name,
+      {String name,
       dynamic value,
-      AdditionalSteps? additionalStepBeforeReturn}) {
+      AdditionalSteps additionalStepBeforeReturn}) {
     _additionalSteps[name] = additionalStepBeforeReturn;
     _expectedCalls[name] = value;
   }
@@ -35,7 +35,7 @@ class StubInAppPurchasePlatform {
     _previousCalls.add(call);
     if (_expectedCalls.containsKey(call.method)) {
       if (_additionalSteps[call.method] != null) {
-        _additionalSteps[call.method]!(call.arguments);
+        _additionalSteps[call.method](call.arguments);
       }
       return Future<dynamic>.sync(() => _expectedCalls[call.method]);
     } else {

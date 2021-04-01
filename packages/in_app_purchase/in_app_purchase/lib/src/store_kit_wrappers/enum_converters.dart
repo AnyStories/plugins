@@ -13,16 +13,16 @@ part 'enum_converters.g.dart';
 /// Use these in `@JsonSerializable()` classes by annotating them with
 /// `@SKTransactionStatusConverter()`.
 class SKTransactionStatusConverter
-    implements JsonConverter<SKPaymentTransactionStateWrapper, int?> {
+    implements JsonConverter<SKPaymentTransactionStateWrapper, int> {
   /// Default const constructor.
   const SKTransactionStatusConverter();
 
   @override
-  SKPaymentTransactionStateWrapper fromJson(int? json) {
+  SKPaymentTransactionStateWrapper fromJson(int json) {
     if (json == null) {
       return SKPaymentTransactionStateWrapper.unspecified;
     }
-    return _$enumDecode<SKPaymentTransactionStateWrapper, dynamic>(
+    return _$enumDecode<SKPaymentTransactionStateWrapper>(
         _$SKPaymentTransactionStateWrapperEnumMap
             .cast<SKPaymentTransactionStateWrapper, dynamic>(),
         json);
@@ -45,7 +45,7 @@ class SKTransactionStatusConverter
 
   @override
   int toJson(SKPaymentTransactionStateWrapper object) =>
-      _$SKPaymentTransactionStateWrapperEnumMap[object]!;
+      _$SKPaymentTransactionStateWrapperEnumMap[object];
 }
 
 /// Serializer for [SKSubscriptionPeriodUnit].
@@ -53,16 +53,16 @@ class SKTransactionStatusConverter
 /// Use these in `@JsonSerializable()` classes by annotating them with
 /// `@SKSubscriptionPeriodUnitConverter()`.
 class SKSubscriptionPeriodUnitConverter
-    implements JsonConverter<SKSubscriptionPeriodUnit, int?> {
+    implements JsonConverter<SKSubscriptionPeriodUnit, int> {
   /// Default const constructor.
   const SKSubscriptionPeriodUnitConverter();
 
   @override
-  SKSubscriptionPeriodUnit fromJson(int? json) {
+  SKSubscriptionPeriodUnit fromJson(int json) {
     if (json == null) {
       return SKSubscriptionPeriodUnit.day;
     }
-    return _$enumDecode<SKSubscriptionPeriodUnit, dynamic>(
+    return _$enumDecode<SKSubscriptionPeriodUnit>(
         _$SKSubscriptionPeriodUnitEnumMap
             .cast<SKSubscriptionPeriodUnit, dynamic>(),
         json);
@@ -70,7 +70,7 @@ class SKSubscriptionPeriodUnitConverter
 
   @override
   int toJson(SKSubscriptionPeriodUnit object) =>
-      _$SKSubscriptionPeriodUnitEnumMap[object]!;
+      _$SKSubscriptionPeriodUnitEnumMap[object];
 }
 
 /// Serializer for [SKProductDiscountPaymentMode].
@@ -78,16 +78,16 @@ class SKSubscriptionPeriodUnitConverter
 /// Use these in `@JsonSerializable()` classes by annotating them with
 /// `@SKProductDiscountPaymentModeConverter()`.
 class SKProductDiscountPaymentModeConverter
-    implements JsonConverter<SKProductDiscountPaymentMode, int?> {
+    implements JsonConverter<SKProductDiscountPaymentMode, int> {
   /// Default const constructor.
   const SKProductDiscountPaymentModeConverter();
 
   @override
-  SKProductDiscountPaymentMode fromJson(int? json) {
+  SKProductDiscountPaymentMode fromJson(int json) {
     if (json == null) {
       return SKProductDiscountPaymentMode.payAsYouGo;
     }
-    return _$enumDecode<SKProductDiscountPaymentMode, dynamic>(
+    return _$enumDecode<SKProductDiscountPaymentMode>(
         _$SKProductDiscountPaymentModeEnumMap
             .cast<SKProductDiscountPaymentMode, dynamic>(),
         json);
@@ -95,13 +95,13 @@ class SKProductDiscountPaymentModeConverter
 
   @override
   int toJson(SKProductDiscountPaymentMode object) =>
-      _$SKProductDiscountPaymentModeEnumMap[object]!;
+      _$SKProductDiscountPaymentModeEnumMap[object];
 }
 
 // Define a class so we generate serializer helper methods for the enums
 @JsonSerializable()
 class _SerializedEnums {
-  late SKPaymentTransactionStateWrapper response;
-  late SKSubscriptionPeriodUnit unit;
-  late SKProductDiscountPaymentMode discountPaymentMode;
+  SKPaymentTransactionStateWrapper response;
+  SKSubscriptionPeriodUnit unit;
+  SKProductDiscountPaymentMode discountPaymentMode;
 }
