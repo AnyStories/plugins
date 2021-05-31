@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// @dart=2.9
+
 import 'package:args/command_runner.dart';
 import 'package:file/file.dart';
 import 'package:file/local.dart';
@@ -12,7 +14,7 @@ import 'util.dart';
 
 void main() {
   group('$CreateAllPluginsAppCommand', () {
-    CommandRunner<Null> runner;
+    CommandRunner<void> runner;
     FileSystem fileSystem;
     Directory testRoot;
     Directory packagesDir;
@@ -22,7 +24,7 @@ void main() {
       // Since the core of this command is a call to 'flutter create', the test
       // has to use the real filesystem. Put everything possible in a unique
       // temporary to minimize affect on the host system.
-      fileSystem = LocalFileSystem();
+      fileSystem = const LocalFileSystem();
       testRoot = fileSystem.systemTempDirectory.createTempSync();
       packagesDir = testRoot.childDirectory('packages');
 
@@ -32,7 +34,7 @@ void main() {
         pluginsRoot: testRoot,
       );
       appDir = command.appDirectory;
-      runner = CommandRunner<Null>(
+      runner = CommandRunner<void>(
           'create_all_test', 'Test for $CreateAllPluginsAppCommand');
       runner.addCommand(command);
     });

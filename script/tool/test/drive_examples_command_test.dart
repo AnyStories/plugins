@@ -14,10 +14,10 @@ import 'util.dart';
 
 void main() {
   group('test drive_example_command', () {
-    CommandRunner<Null> runner;
-    RecordingProcessRunner processRunner;
+    late CommandRunner<void> runner;
+    late RecordingProcessRunner processRunner;
     final String flutterCommand =
-        LocalPlatform().isWindows ? 'flutter.bat' : 'flutter';
+        const LocalPlatform().isWindows ? 'flutter.bat' : 'flutter';
     setUp(() {
       initializeFakePackages();
       processRunner = RecordingProcessRunner();
@@ -25,7 +25,7 @@ void main() {
           mockPackagesDir, mockFileSystem,
           processRunner: processRunner);
 
-      runner = CommandRunner<Null>(
+      runner = CommandRunner<void>(
           'drive_examples_command', 'Test for drive_example_command');
       runner.addCommand(command);
     });
@@ -55,14 +55,14 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      String deviceTestPath = p.join('test', 'plugin.dart');
-      String driverTestPath = p.join('test_driver', 'plugin_test.dart');
-      print(processRunner.recordedCalls);
+      final String deviceTestPath = p.join('test', 'plugin.dart');
+      final String driverTestPath = p.join('test_driver', 'plugin_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
@@ -100,14 +100,14 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      String deviceTestPath = p.join('test_driver', 'plugin.dart');
-      String driverTestPath = p.join('test_driver', 'plugin_test.dart');
-      print(processRunner.recordedCalls);
+      final String deviceTestPath = p.join('test_driver', 'plugin.dart');
+      final String driverTestPath = p.join('test_driver', 'plugin_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
@@ -129,6 +129,25 @@ void main() {
       createFakePlugin('plugin',
           withExtraFiles: <List<String>>[
             <String>['example', 'test_driver', 'plugin_test.dart'],
+          ],
+          isAndroidPlugin: true,
+          isIosPlugin: true);
+
+      final Directory pluginExampleDirectory =
+          mockPackagesDir.childDirectory('plugin').childDirectory('example');
+
+      createFakePubspec(pluginExampleDirectory, isFlutter: true);
+
+      await expectLater(
+          () => runCapturingPrint(runner, <String>['drive-examples']),
+          throwsA(const TypeMatcher<ToolExit>()));
+    });
+
+    test('a plugin without any integration test files is reported as an error',
+        () async {
+      createFakePlugin('plugin',
+          withExtraFiles: <List<String>>[
+            <String>['example', 'lib', 'main.dart'],
           ],
           isAndroidPlugin: true,
           isIosPlugin: true);
@@ -168,13 +187,14 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      String driverTestPath = p.join('test_driver', 'integration_test.dart');
-      print(processRunner.recordedCalls);
+      final String driverTestPath =
+          p.join('test_driver', 'integration_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
@@ -222,12 +242,13 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
+          'Not supported for the target platform; skipping.',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running drive-examples --linux on a non-Linux
       // plugin is a no-op.
       expect(processRunner.recordedCalls, <ProcessCall>[]);
@@ -254,14 +275,14 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      String deviceTestPath = p.join('test_driver', 'plugin.dart');
-      String driverTestPath = p.join('test_driver', 'plugin_test.dart');
-      print(processRunner.recordedCalls);
+      final String deviceTestPath = p.join('test_driver', 'plugin.dart');
+      final String driverTestPath = p.join('test_driver', 'plugin_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
@@ -299,12 +320,13 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
+          'Not supported for the target platform; skipping.',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running drive-examples --macos with no macos
       // implementation is a no-op.
       expect(processRunner.recordedCalls, <ProcessCall>[]);
@@ -331,14 +353,14 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      String deviceTestPath = p.join('test_driver', 'plugin.dart');
-      String driverTestPath = p.join('test_driver', 'plugin_test.dart');
-      print(processRunner.recordedCalls);
+      final String deviceTestPath = p.join('test_driver', 'plugin.dart');
+      final String driverTestPath = p.join('test_driver', 'plugin_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
@@ -378,12 +400,13 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
+          'Not supported for the target platform; skipping.',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running drive-examples --web on a non-web
       // plugin is a no-op.
       expect(processRunner.recordedCalls, <ProcessCall>[]);
@@ -410,14 +433,14 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      String deviceTestPath = p.join('test_driver', 'plugin.dart');
-      String driverTestPath = p.join('test_driver', 'plugin_test.dart');
-      print(processRunner.recordedCalls);
+      final String deviceTestPath = p.join('test_driver', 'plugin.dart');
+      final String driverTestPath = p.join('test_driver', 'plugin_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
@@ -459,12 +482,13 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
+          'Not supported for the target platform; skipping.',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running drive-examples --windows on a
       // non-Windows plugin is a no-op.
       expect(processRunner.recordedCalls, <ProcessCall>[]);
@@ -491,14 +515,14 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      String deviceTestPath = p.join('test_driver', 'plugin.dart');
-      String driverTestPath = p.join('test_driver', 'plugin_test.dart');
-      print(processRunner.recordedCalls);
+      final String deviceTestPath = p.join('test_driver', 'plugin.dart');
+      final String driverTestPath = p.join('test_driver', 'plugin_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
@@ -537,12 +561,33 @@ void main() {
       expect(
         output,
         orderedEquals(<String>[
+          '\n==========\nChecking plugin...',
+          'Not supported for the target platform; skipping.',
           '\n\n',
           'All driver tests successful!',
         ]),
       );
 
-      print(processRunner.recordedCalls);
+      // Output should be empty since running drive-examples --macos with no macos
+      // implementation is a no-op.
+      expect(processRunner.recordedCalls, <ProcessCall>[]);
+    });
+
+    test('platform interface plugins are silently skipped', () async {
+      createFakePlugin('aplugin_platform_interface');
+
+      final List<String> output = await runCapturingPrint(runner, <String>[
+        'drive-examples',
+      ]);
+
+      expect(
+        output,
+        orderedEquals(<String>[
+          '\n\n',
+          'All driver tests successful!',
+        ]),
+      );
+
       // Output should be empty since running drive-examples --macos with no macos
       // implementation is a no-op.
       expect(processRunner.recordedCalls, <ProcessCall>[]);
@@ -567,9 +612,8 @@ void main() {
         '--enable-experiment=exp1',
       ]);
 
-      String deviceTestPath = p.join('test', 'plugin.dart');
-      String driverTestPath = p.join('test_driver', 'plugin_test.dart');
-      print(processRunner.recordedCalls);
+      final String deviceTestPath = p.join('test', 'plugin.dart');
+      final String driverTestPath = p.join('test_driver', 'plugin_test.dart');
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[

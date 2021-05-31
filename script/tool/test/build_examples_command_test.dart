@@ -13,10 +13,10 @@ import 'util.dart';
 
 void main() {
   group('test build_example_command', () {
-    CommandRunner<Null> runner;
-    RecordingProcessRunner processRunner;
+    late CommandRunner<void> runner;
+    late RecordingProcessRunner processRunner;
     final String flutterCommand =
-        LocalPlatform().isWindows ? 'flutter.bat' : 'flutter';
+        const LocalPlatform().isWindows ? 'flutter.bat' : 'flutter';
 
     setUp(() {
       initializeFakePackages();
@@ -25,7 +25,7 @@ void main() {
           mockPackagesDir, mockFileSystem,
           processRunner: processRunner);
 
-      runner = CommandRunner<Null>(
+      runner = CommandRunner<void>(
           'build_examples_command', 'Test for build_example_command');
       runner.addCommand(command);
       cleanupPackages();
@@ -59,7 +59,6 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running build-examples --macos with no macos
       // implementation is a no-op.
       expect(processRunner.recordedCalls, orderedEquals(<ProcessCall>[]));
@@ -96,13 +95,12 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
             ProcessCall(
                 flutterCommand,
-                <String>[
+                const <String>[
                   'build',
                   'ios',
                   '--no-codesign',
@@ -142,7 +140,6 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running build-examples --linux with no
       // Linux implementation is a no-op.
       expect(processRunner.recordedCalls, orderedEquals(<ProcessCall>[]));
@@ -175,11 +172,10 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
-            ProcessCall(flutterCommand, <String>['build', 'linux'],
+            ProcessCall(flutterCommand, const <String>['build', 'linux'],
                 pluginExampleDirectory.path),
           ]));
       cleanupPackages();
@@ -211,7 +207,6 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running build-examples --macos with no macos
       // implementation is a no-op.
       expect(processRunner.recordedCalls, orderedEquals(<ProcessCall>[]));
@@ -245,11 +240,10 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
-            ProcessCall(flutterCommand, <String>['build', 'macos'],
+            ProcessCall(flutterCommand, const <String>['build', 'macos'],
                 pluginExampleDirectory.path),
           ]));
       cleanupPackages();
@@ -280,7 +274,6 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running build-examples --macos with no macos
       // implementation is a no-op.
       expect(processRunner.recordedCalls, orderedEquals(<ProcessCall>[]));
@@ -314,11 +307,10 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
-            ProcessCall(flutterCommand, <String>['build', 'web'],
+            ProcessCall(flutterCommand, const <String>['build', 'web'],
                 pluginExampleDirectory.path),
           ]));
       cleanupPackages();
@@ -353,7 +345,6 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running build-examples --macos with no macos
       // implementation is a no-op.
       expect(processRunner.recordedCalls, orderedEquals(<ProcessCall>[]));
@@ -386,11 +377,10 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
-            ProcessCall(flutterCommand, <String>['build', 'windows'],
+            ProcessCall(flutterCommand, const <String>['build', 'windows'],
                 pluginExampleDirectory.path),
           ]));
       cleanupPackages();
@@ -425,7 +415,6 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       // Output should be empty since running build-examples --macos with no macos
       // implementation is a no-op.
       expect(processRunner.recordedCalls, orderedEquals(<ProcessCall>[]));
@@ -462,11 +451,10 @@ void main() {
         ]),
       );
 
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
-            ProcessCall(flutterCommand, <String>['build', 'apk'],
+            ProcessCall(flutterCommand, const <String>['build', 'apk'],
                 pluginExampleDirectory.path),
           ]));
       cleanupPackages();
@@ -492,13 +480,12 @@ void main() {
         '--enable-experiment=exp1'
       ]);
 
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
             ProcessCall(
                 flutterCommand,
-                <String>['build', 'apk', '--enable-experiment=exp1'],
+                const <String>['build', 'apk', '--enable-experiment=exp1'],
                 pluginExampleDirectory.path),
           ]));
       cleanupPackages();
@@ -522,13 +509,12 @@ void main() {
         '--no-macos',
         '--enable-experiment=exp1'
       ]);
-      print(processRunner.recordedCalls);
       expect(
           processRunner.recordedCalls,
           orderedEquals(<ProcessCall>[
             ProcessCall(
                 flutterCommand,
-                <String>[
+                const <String>[
                   'build',
                   'ios',
                   '--no-codesign',
